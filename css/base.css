@@ -1,0 +1,158 @@
+/* ===== 基础：色板、字体、全局层 ===== */
+:root {
+  --night-0: #040509;
+  --night-1: #0a0c14;
+  --night-2: #141a2a;
+  --night-3: #252c42;
+  --mist: #b9c0d6;
+  --bone: #ddd5c2;
+  --bone-dim: #9d978a;
+  --candle: #ffb35c;
+  --candle-deep: #d9642a;
+  --wisp: #8fe8d6;
+  --blood: #7a1420;
+  --gold: #c9a55c;
+  --bronze: #7d5a32;
+
+  --f-cn: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --f-latin: "Cinzel", "Trajan Pro", "Times New Roman", serif;
+  --f-deco: "Cinzel Decorative", "Cinzel", serif;
+  --f-black: "UnifrakturMaguntia", "Cinzel Decorative", serif;
+  --f-italic: "Cormorant Garamond", "Noto Serif SC", serif;
+  --f-brush: "Ma Shan Zheng", "STXingkai", "KaiTi", cursive;
+
+  --ease-heavy: cubic-bezier(.62, -0.04, .2, 1.04);
+  --ease-out: cubic-bezier(.16, .84, .24, 1);
+  --fog-strength: 1;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  background: var(--night-0);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--bone);
+  font-family: var(--f-cn);
+  line-height: 1.7;
+  background: var(--night-0);
+  overflow-x: hidden;
+}
+
+body.crypt-open { overflow: hidden; }
+body.gate-active { overflow: hidden; }
+
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+img { max-width: 100%; }
+
+::selection { background: rgba(122, 20, 32, .6); color: #fff; }
+
+:focus-visible {
+  outline: 1px solid rgba(255, 179, 92, .8);
+  outline-offset: 4px;
+}
+
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* 滚动条：锈铁 */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #07080c; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #2a2320, #3d3129 50%, #2a2320);
+  border: 2px solid #07080c;
+  border-radius: 6px;
+}
+* { scrollbar-color: #3d3129 #07080c; scrollbar-width: thin; }
+
+/* ===== 全屏氛围层（层级从下到上） ===== */
+.sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+#scene { position: relative; z-index: 2; transition: filter 1.4s var(--ease-out), transform 2.4s var(--ease-out); transform-origin: 50% 40vh; }
+.fog-front { position: fixed; left: 0; right: 0; bottom: 0; height: 55vh; z-index: 3; pointer-events: none; overflow: hidden; }
+#fx-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 4; pointer-events: none; }
+.lantern-light { position: fixed; left: -100vw; top: -100vh; width: 200vw; height: 200vh; z-index: 5; pointer-events: none; }
+.vignette { position: fixed; inset: 0; z-index: 6; pointer-events: none; }
+.grain { position: fixed; inset: -180px; z-index: 7; pointer-events: none; }
+.flash { display: none; position: fixed; inset: 0; z-index: 8; pointer-events: none; opacity: 0; background: radial-gradient(ellipse at 70% 10%, rgba(210, 220, 255, .55), rgba(150, 165, 220, .18) 60%, transparent); mix-blend-mode: screen; }
+
+.flash.on { display: block; }
+
+/* 追随鼠标的提灯光：中心暖光，四周压暗 */
+/* 两倍视口大小、光心在中央（光晕由 app.js 画进画布）；鼠标移动时整层平移，只由合成器处理 */
+.lantern-light {
+  transform: translate3d(50vw, 50vh, 0);
+  will-change: transform;
+}
+@media (hover: none) { .lantern-light { display: none; } }
+
+.vignette {
+  background:
+    radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, .65) 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, .25), transparent 12%, transparent 88%, rgba(0, 0, 0, .35));
+}
+
+/* 胶片颗粒 */
+.grain {
+  background-image: var(--tex-grain);
+  background-size: 180px;
+  opacity: .5;
+  mix-blend-mode: overlay;
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-110px, 70px); }
+  40% { transform: translate(70px, -130px); }
+  60% { transform: translate(-150px, -30px); }
+  80% { transform: translate(100px, 100px); }
+  100% { transform: translate(0, 0); }
+}
+
+/* 前景雾 */
+.fog-band {
+  position: absolute; left: 0; bottom: 0;
+  width: 200%; height: 100%;
+  background-repeat: repeat-x;
+  background-position: left bottom;
+}
+.fog-front .f1 { background-image: var(--tex-fog-f1); background-size: 1400px 100%; opacity: calc(.4 * var(--fog-strength)); animation: fog-drift 140s linear infinite; }
+.fog-front .f2 { background-image: var(--tex-fog-f2); background-size: 900px 70%; opacity: calc(.24 * var(--fog-strength)); animation: fog-drift 80s linear infinite reverse; }
+@keyframes fog-drift { to { transform: translateX(-50%); } }
+
+/* 背景音按钮 */
+.audio-toggle {
+  position: fixed; right: 22px; bottom: 22px; z-index: 12;
+  width: 46px; height: 46px; border-radius: 50%;
+  border: 1px solid rgba(201, 165, 92, .35);
+  background: radial-gradient(circle at 35% 30%, #2b2620, #0d0b0a);
+  cursor: pointer;
+  display: grid; place-items: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .06);
+  transition: transform .3s, box-shadow .3s;
+}
+.audio-toggle[hidden] { display: none; }
+.audio-toggle:hover { transform: translateY(-2px); box-shadow: 0 0 22px rgba(255, 179, 92, .25), 0 6px 20px rgba(0, 0, 0, .6); }
+.audio-toggle svg { width: 22px; height: 22px; fill: var(--gold); opacity: .55; transition: opacity .3s; }
+.audio-toggle.on svg { opacity: 1; animation: bell-sway 3s ease-in-out infinite; transform-origin: 50% 10%; }
+@keyframes bell-sway { 50% { transform: rotate(8deg); } 0%, 100% { transform: rotate(-8deg); } }
+
+/* 背景被模糊时暂停其中的动画：模糊层内任何变化都会让整屏重新模糊 */
+body.crypt-open #scene *, body.gate-active #scene * { animation-play-state: paused !important; }
+
+/* 视口外的部分暂停动画（看不见，也就不必每帧计算） */
+.off *, .off *::before, .off *::after { animation-play-state: paused !important; }
+/* 首屏离开视口后天幕被不透明的墓园地面完全遮住；放大视图会缩小场景露出边缘，此时保留 */
+body:not(.crypt-open) .sky.off { visibility: hidden; }
+
+/* 进场前隐藏主内容，防止闪烁 */
+body.is-loading #scene { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  html { scroll-behavior: auto; }
+}

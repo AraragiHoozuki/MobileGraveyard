@@ -1,0 +1,342 @@
+/* ===== 天幕 ===== */
+.sky {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 100%, rgba(70, 60, 110, .35), transparent 70%),
+    linear-gradient(to bottom, #03040a 0%, #080b18 30%, #121729 62%, #1f2238 85%, #2a2438 100%);
+}
+#sky-canvas, #sky-fx { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+.moon-wrap {
+  position: absolute;
+  top: 9vh; right: 13vw;
+  width: clamp(80px, 11vw, 170px);
+  aspect-ratio: 1;
+  will-change: transform;
+}
+.moon {
+  position: absolute; inset: 0; border-radius: 50%;
+  background:
+    radial-gradient(circle at 64% 36%, rgba(105, 98, 86, .38), transparent 11%),
+    radial-gradient(circle at 34% 62%, rgba(105, 98, 86, .32), transparent 14%),
+    radial-gradient(circle at 48% 24%, rgba(105, 98, 86, .25), transparent 7%),
+    radial-gradient(circle at 70% 68%, rgba(105, 98, 86, .22), transparent 8%),
+    radial-gradient(ellipse at 28% 40%, rgba(130, 120, 104, .3), transparent 38%),
+    radial-gradient(circle at 38% 34%, #fffdf3, #efe8d3 42%, #cbc2a8 78%, #9e967f);
+  box-shadow:
+    0 0 36px rgba(255, 246, 220, .45),
+    0 0 110px rgba(205, 212, 255, .22),
+    inset -16px -12px 30px rgba(55, 50, 70, .5);
+}
+.moon::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%;
+  background: var(--tex-blotch); background-size: 140px;
+  mix-blend-mode: multiply; opacity: .45;
+}
+.moon-halo {
+  position: absolute; inset: -140%;
+  background: radial-gradient(circle, rgba(215, 222, 255, .17), rgba(150, 160, 220, .05) 35%, transparent 62%);
+  animation: halo 9s ease-in-out infinite;
+}
+@keyframes halo { 50% { opacity: .65; transform: scale(1.06); } }
+
+.clouds { position: absolute; left: 0; right: 0; top: 0; height: 50vh; }
+.cloud-band {
+  position: absolute; left: 0; width: 200%;
+  background-image: var(--tex-cloud); background-repeat: repeat-x;
+}
+.cloud-band.c1 { top: 4vh; height: 22vh; background-size: 1100px 100%; opacity: .5; animation: fog-drift 180s linear infinite; }
+.cloud-band.c2 { top: 16vh; height: 18vh; background-size: 800px 100%; opacity: .3; animation: fog-drift 110s linear infinite; }
+
+/* ===== 首屏 ===== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 10vh 6vw 28vh;
+  text-align: center;
+}
+
+.landscape { position: absolute; left: 0; right: 0; bottom: 0; height: 62vh; pointer-events: none; }
+.landscape::before { /* 地平线辉光 */
+  content: ""; position: absolute; left: -10%; right: -10%; bottom: 20%; height: 60%;
+  background: radial-gradient(ellipse 60% 45% at 55% 80%, rgba(120, 100, 170, .22), transparent 70%);
+}
+.landscape .layer { position: absolute; inset: 0; will-change: transform; }
+.landscape svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; }
+.landscape .far { color: #10131f; }
+.landscape .mid { color: #0c0f18; }
+.landscape .near { color: #05060a; }
+.landscape .window-glow { animation: window-flicker 5s infinite; }
+@keyframes window-flicker {
+  0%, 100% { opacity: .85; } 42% { opacity: .9; } 44% { opacity: .45; } 46% { opacity: .95; } 70% { opacity: .7; }
+}
+
+.hero::after { /* 与墓园地面融合 */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 12vh;
+  background: linear-gradient(to bottom, transparent, #05060a);
+  pointer-events: none;
+}
+
+.hero-content { position: relative; z-index: 2; max-width: 980px; }
+
+.hero-ornament { width: min(420px, 70vw); margin: 0 auto 18px; color: rgba(201, 165, 92, .6); }
+.hero-ornament svg { width: 100%; height: auto; display: block; }
+
+.hero-latin {
+  margin: 0 0 .2em;
+  font-family: var(--f-black);
+  font-size: clamp(20px, 2.6vw, 34px);
+  color: rgba(201, 165, 92, .78);
+  letter-spacing: .05em;
+  text-shadow: 0 0 18px rgba(201, 165, 92, .25);
+}
+
+.hero-title {
+  margin: 0;
+  font-family: var(--f-cn);
+  font-weight: 900;
+  font-size: clamp(54px, 11vw, 150px);
+  line-height: 1.12;
+  letter-spacing: .2em;
+  text-indent: .2em;
+  color: transparent;
+  filter: drop-shadow(0 0 26px rgba(190, 200, 255, .16)) drop-shadow(0 3px 2px rgba(0, 0, 0, .9));
+}
+.hero-title .ch {
+  display: inline-block;
+  background-image: var(--tex-blotch), linear-gradient(180deg, #f4efe2 0%, #c4beb0 40%, #7c7872 78%, #4c4a4a 100%);
+  background-size: 300px, 100% 100%;
+  background-blend-mode: overlay, normal;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-sub {
+  margin: 1.1em 0 .4em;
+  font-size: clamp(14px, 1.55vw, 19px);
+  letter-spacing: .32em;
+  color: var(--mist);
+  opacity: .85;
+}
+.hero-epi {
+  margin: 0;
+  font-family: var(--f-italic);
+  font-style: italic;
+  font-size: clamp(15px, 1.6vw, 20px);
+  color: var(--bone-dim);
+}
+.hero-stats {
+  display: inline-flex; gap: 1.4em; align-items: center;
+  margin: 2.2em 0 0; padding: .55em 1.6em;
+  font-size: 13px; letter-spacing: .3em;
+  color: rgba(201, 165, 92, .8);
+  border-top: 1px solid rgba(201, 165, 92, .25);
+  border-bottom: 1px solid rgba(201, 165, 92, .25);
+}
+.hero-stats b { font-family: var(--f-latin); font-weight: 600; font-size: 1.25em; color: var(--bone); letter-spacing: .05em; margin: 0 .2em; }
+.hero-stats i { font-style: normal; opacity: .5; }
+
+/* 入场逐字浮现 */
+.reveal-seq > * { opacity: 0; transform: translateY(18px); filter: blur(8px); }
+.revealed .reveal-seq > * {
+  animation: rise-in 1.6s var(--ease-out) forwards;
+  animation-delay: calc(var(--i, 0) * 180ms + 200ms);
+}
+.hero-title .ch { opacity: 0; transform: translateY(30px) scale(1.08); filter: blur(14px); }
+.revealed .hero-title .ch { animation: rise-in 1.8s var(--ease-out) forwards; animation-delay: calc(var(--c, 0) * 140ms + 500ms); }
+@keyframes rise-in { to { opacity: 1; transform: none; filter: blur(0); } }
+
+.descend {
+  position: absolute; left: 50%; bottom: 6vh; z-index: 3;
+  transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  text-decoration: none;
+  font-size: 12px; letter-spacing: .5em; text-indent: .5em;
+  color: rgba(221, 213, 194, .55);
+  transition: color .4s;
+}
+.descend { opacity: 0; transition: opacity 2s 2.6s, color .4s; }
+.revealed .descend { opacity: 1; }
+.descend:hover { color: var(--candle); }
+.descend i { position: relative; width: 1px; height: 54px; background: linear-gradient(rgba(221, 213, 194, .4), transparent); overflow: hidden; }
+.descend i::after {
+  content: ""; position: absolute; left: -1px; top: 0; width: 3px; height: 12px; border-radius: 2px;
+  background: var(--candle); box-shadow: 0 0 8px var(--candle);
+  animation: drip 2.4s var(--ease-heavy) infinite;
+}
+@keyframes drip { 0% { transform: translateY(-12px); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(54px); opacity: 0; } }
+
+/* 蝙蝠 */
+.bats { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+.bat { position: absolute; left: 0; top: 0; width: 34px; color: #06070b; will-change: transform; }
+.bat svg { width: 100%; height: auto; display: block; animation: flap .22s ease-in-out infinite alternate; transform-origin: 50% 40%; }
+@keyframes flap { from { transform: scaleY(1); } to { transform: scaleY(.35) translateY(4px); } }
+
+/* ===== 墓园地面 ===== */
+.yard {
+  position: relative;
+  padding: 6vh 5vw 22vh;
+  background:
+    radial-gradient(ellipse 70% 30% at 50% 0%, rgba(90, 100, 150, .1), transparent 70%),
+    var(--tex-blotch),
+    linear-gradient(to bottom, #05060a 0%, #080a0e 18%, #0a0b0d 60%, #060606 100%);
+  background-size: auto, 420px, auto;
+  background-blend-mode: normal, soft-light, normal;
+}
+
+.yard-section + .yard-section { margin-top: 16vh; }
+
+.yard-title {
+  display: flex; flex-direction: column; align-items: center;
+  margin: 0 auto 7vh; font-weight: normal; text-align: center;
+}
+.yard-title-latin {
+  font-family: var(--f-black); font-size: clamp(18px, 2vw, 26px);
+  color: rgba(201, 165, 92, .6); letter-spacing: .04em;
+}
+.yard-title-main {
+  position: relative; display: inline-flex; align-items: center; gap: 1em;
+  font-size: clamp(22px, 2.6vw, 32px); letter-spacing: .6em; text-indent: .6em;
+  color: var(--bone);
+  text-shadow: 0 0 20px rgba(0, 0, 0, .9);
+}
+.yard-title-main::before, .yard-title-main::after {
+  content: ""; width: clamp(40px, 12vw, 160px); height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201, 165, 92, .55));
+}
+.yard-title-main::after { transform: scaleX(-1); }
+.yard-title .count { font-family: var(--f-latin); font-size: 12px; letter-spacing: .3em; color: var(--bone-dim); margin-top: .6em; }
+
+.graves {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 11vh clamp(24px, 4vw, 64px);
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.graves > .grave { width: 250px; }
+
+/* ===== 页脚 ===== */
+.footer {
+  position: relative;
+  padding: 0 6vw 60px;
+  text-align: center;
+  background: #060606;
+  color: var(--bone-dim);
+  font-size: 14px;
+}
+.fence { height: 110px; margin: -110px -6vw 30px; color: #030304; }
+.fence svg { width: 100%; height: 100%; display: block; }
+.footer-text { max-width: 640px; margin: 0 auto 1.4em; font-family: var(--f-italic); font-style: italic; font-size: 16px; }
+.footer-links { display: flex; justify-content: center; gap: 2em; flex-wrap: wrap; font-family: var(--f-latin); letter-spacing: .25em; font-size: 12px; }
+.footer-links a { text-decoration: none; color: rgba(201, 165, 92, .7); transition: color .3s, text-shadow .3s; }
+.footer-links a:hover { color: var(--candle); text-shadow: 0 0 12px rgba(255, 179, 92, .5); }
+
+/* ===== 开场铁门 ===== */
+.gate { position: fixed; inset: 0; z-index: 30; perspective: 1600px; perspective-origin: 50% 40%; overflow: hidden; }
+.gate[hidden] { display: none; }
+.gate-backlight {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 55% at 50% 45%, rgba(8, 10, 18, .25), rgba(2, 2, 5, .92) 75%);
+  transition: opacity 2.4s var(--ease-out);
+}
+.gate-door {
+  position: absolute; top: 0; bottom: 0; width: 50.5%;
+  transition: transform 2.6s var(--ease-heavy), filter 2.6s;
+  transform-style: preserve-3d;
+  filter: drop-shadow(0 0 1px rgba(0, 0, 0, .9)) drop-shadow(10px 0 20px rgba(0, 0, 0, .6));
+}
+.gate-door.left { left: 0; transform-origin: 0 50%; }
+.gate-door.right { right: 0; transform-origin: 100% 50%; }
+.gate-door svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.gate-door.right svg { transform: scaleX(-1); }
+
+.gate-lock {
+  position: absolute; left: 50%; top: 56%; width: 86px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .7));
+}
+.gate-lock svg { width: 100%; height: auto; display: block; }
+
+.gate-plaque {
+  position: absolute; left: 50%; top: 13vh;
+  transform: translateX(-50%);
+  width: min(520px, 88vw);
+  padding: 34px 28px 26px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 30% 10%, rgba(255, 255, 255, .08), transparent 60%),
+    var(--tex-noise),
+    linear-gradient(160deg, #2d2f36, #1a1b21 55%, #0e0e12);
+  background-size: auto, 160px, auto;
+  background-blend-mode: normal, overlay, normal;
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .8), inset 0 1px 0 rgba(255, 255, 255, .08), inset 0 0 0 1px rgba(0, 0, 0, .6), inset 0 0 0 5px rgba(255, 255, 255, .03);
+  transition: transform 1.4s var(--ease-heavy), opacity 1s, filter 1s;
+}
+.gate-plaque::before, .gate-plaque::after { /* 吊链 */
+  content: ""; position: absolute; top: -13vh; width: 6px; height: 13vh;
+  background: repeating-linear-gradient(to bottom, #3a3b42 0 7px, transparent 7px 9px, #22232a 9px 16px, transparent 16px 18px);
+  box-shadow: 1px 0 0 rgba(0, 0, 0, .6);
+}
+.gate-plaque::before { left: 18%; }
+.gate-plaque::after { right: 18%; }
+.gate-latin { margin: 0; font-family: var(--f-black); font-size: 22px; color: rgba(201, 165, 92, .75); }
+.gate-title {
+  margin: .1em 0 .7em; font-weight: 900; font-size: clamp(34px, 6vw, 52px); letter-spacing: .25em; text-indent: .25em;
+  color: #0f0f13; text-shadow: 0 1px 0 rgba(255, 255, 255, .14), 0 -1px 0 rgba(0, 0, 0, .8);
+}
+.gate-enter {
+  position: relative; cursor: pointer;
+  padding: .8em 2.4em; border: 0; background: none;
+  font-size: 16px; letter-spacing: .5em; text-indent: .5em;
+  color: var(--candle);
+  text-shadow: 0 0 12px rgba(255, 179, 92, .6);
+  transition: letter-spacing .6s var(--ease-out), text-shadow .4s;
+}
+.gate-enter::before, .gate-enter::after {
+  content: ""; position: absolute; top: 50%; width: 28px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--candle));
+  transition: width .5s var(--ease-out);
+}
+.gate-enter::before { right: 100%; }
+.gate-enter::after { left: 100%; transform: scaleX(-1); }
+.gate-enter:focus-visible { outline: none; }
+.gate-enter:hover, .gate-enter:focus-visible { letter-spacing: .7em; text-shadow: 0 0 18px rgba(255, 179, 92, .95), 0 0 40px rgba(217, 100, 42, .5); }
+.gate-enter:hover::before, .gate-enter:hover::after, .gate-enter:focus-visible::before, .gate-enter:focus-visible::after { width: 48px; }
+.gate-enter span { animation: candle-breath 3s ease-in-out infinite; }
+@keyframes candle-breath { 50% { opacity: .7; } }
+.gate-hint { margin: .6em 0 0; font-family: var(--f-latin); font-size: 11px; letter-spacing: .6em; color: rgba(221, 213, 194, .35); }
+
+/* 开门动画 */
+.gate.opening .gate-lock { animation: lock-fall 1s cubic-bezier(.5, 0, 1, .5) forwards; }
+.gate.opening .gate-plaque { transform: translate(-50%, -30px); opacity: 0; filter: blur(6px); }
+.gate.opening .gate-door { animation: rattle .4s ease-in-out; }
+.gate.opening.swing .gate-door.left { transform: rotateY(-98deg); filter: brightness(.6); }
+.gate.opening.swing .gate-door.right { transform: rotateY(98deg); filter: brightness(.6); }
+.gate.opening.swing .gate-backlight { opacity: 0; }
+@keyframes lock-fall {
+  0% { transform: translate(-50%, -50%) rotate(0); }
+  15% { transform: translate(-50%, -46%) rotate(-12deg); }
+  100% { transform: translate(-50%, 70vh) rotate(55deg); opacity: .6; }
+}
+@keyframes rattle { 25% { translate: -2px 0; } 50% { translate: 2px 0; } 75% { translate: -1px 0; } }
+
+body.gate-active #scene { filter: brightness(.45) blur(2px); transform: scale(.94); }
+
+@media (max-width: 640px) {
+  .gate-enter { padding: .8em 1em; letter-spacing: .3em; text-indent: .3em; }
+  .gate-enter::before, .gate-enter::after { width: 18px; }
+  .hero { padding-bottom: 30vh; }
+  .hero-title { letter-spacing: .12em; text-indent: .12em; }
+  .hero-sub { letter-spacing: .15em; }
+  .hero-stats { gap: .8em; padding: .5em .8em; letter-spacing: .15em; font-size: 12px; }
+  .graves { gap: 8vh 2vw; }
+  .graves > .grave { width: 44vw; }
+  .yard { padding: 4vh 3vw 18vh; }
+}
