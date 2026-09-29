@@ -20,8 +20,8 @@ window.GRAVEYARD = {
     footer: "此处长眠着我们的青春。愿每一个被关闭的世界，都有人为它点一盏灯。",
     links: [
       { label: "BILIBILI", url: "https://space.bilibili.com/3325311" },
-      { label: "GitHub", url: "https://github.com/" },
-      { label: "反馈", url: "https://github.com/" }
+      { label: "GitHub", url: "https://github.com/AraragiHoozuki" },
+      { label: "QQ", url: "https://qm.qq.com/q/bAY11Mr5v2" }
     ]
   },
 
