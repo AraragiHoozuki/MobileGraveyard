@@ -4,6 +4,11 @@
 .mat-slate     { --s-hi: #4d5360; --s-base: #2a2e37; --s-lo: #0f1115; --ink: #d6d1c4; --ink-hi: rgba(0, 0, 0, .7);        --ink-lo: rgba(255, 255, 255, .06); --detail: var(--tex-noise); --detail-size: 90px; --detail-blend: soft-light; --accent: #d8b46a; }
 .mat-sandstone { --s-hi: #b59c7b; --s-base: #846e52; --s-lo: #3a2e21; --ink: #1a120b; --ink-hi: rgba(255, 236, 200, .22); --ink-lo: rgba(0, 0, 0, .35); --detail: var(--tex-speckle); --detail-size: 150px; --detail-blend: multiply; --accent: #3d2b17; }
 .mat-basalt    { --s-hi: #3b3a3e; --s-base: #1d1c20; --s-lo: #09090a; --ink: #b59a62; --ink-hi: rgba(0, 0, 0, .8);        --ink-lo: rgba(255, 220, 150, .1); --detail: var(--tex-speckle); --detail-size: 120px; --detail-blend: screen; --accent: #b59a62; }
+.mat-obsidian  { --s-hi: #4a4358; --s-base: #16121f; --s-lo: #050408; --ink: #c9b8ee; --ink-hi: rgba(0, 0, 0, .8);        --ink-lo: rgba(190, 160, 255, .12); --detail: var(--tex-veins);   --detail-size: cover; --detail-blend: screen; --accent: #b79cff; }
+.mat-sakura    { --s-hi: #f0d8dc; --s-base: #c9a4ad; --s-lo: #7a5860; --ink: #3a1c26; --ink-hi: rgba(255, 240, 242, .5); --ink-lo: rgba(60, 20, 30, .28);  --detail: var(--tex-veins);   --detail-size: cover; --detail-blend: multiply; --accent: #8a3548; }
+.mat-bronze    { --s-hi: #8fb09a; --s-base: #4f705f; --s-lo: #1c2e26; --ink: #101c16; --ink-hi: rgba(190, 240, 210, .28); --ink-lo: rgba(0, 0, 0, .4);   --detail: var(--tex-blotch);  --detail-size: 240px; --detail-blend: overlay;  --accent: #d5b878; }
+.mat-wood      { --s-hi: #8a6540; --s-base: #5a3f26; --s-lo: #23170d; --ink: #1a100a; --ink-hi: rgba(255, 220, 170, .2); --ink-lo: rgba(0, 0, 0, .45);  --detail: var(--tex-grain);   --detail-size: 90px;  --detail-blend: multiply; --accent: #e0bd7a; }
+.mat-crystal   { --s-hi: #c9f2ee; --s-base: #6fb7bd; --s-lo: #1d4a56; --ink: #0a2a34; --ink-hi: rgba(240, 255, 255, .55); --ink-lo: rgba(0, 30, 40, .3);  --detail: var(--tex-veins);   --detail-size: cover; --detail-blend: soft-light; --accent: #f4ffff; }
 
 /* ===== 石面（卡片与放大视图共用） ===== */
 .stone-face {
@@ -27,6 +32,14 @@
   background: var(--detail) var(--tx, 0) var(--ty, 0) / var(--detail-size);
   mix-blend-mode: var(--detail-blend);
   opacity: .55;
+}
+.mat-wood .stone-face .detail { /* 竖向木纹：两组不同周期的细线叠加 */
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, .3) 0 1px, transparent 1px 6px, rgba(0, 0, 0, .14) 6px 8px, transparent 8px 13px),
+    repeating-linear-gradient(88deg, rgba(255, 215, 160, .12) 0 2px, transparent 2px 9px),
+    var(--tex-speckle);
+  background-size: auto, auto, 160px;
+  mix-blend-mode: multiply; opacity: .75;
 }
 .stone-face .moss { position: absolute; inset: 0; mix-blend-mode: multiply; }
 .stone-face .bevel, .stone-face .cracks { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }

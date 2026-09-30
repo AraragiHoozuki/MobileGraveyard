@@ -3,8 +3,8 @@
   const GY = window.GY;
   const { esc } = GY;
 
-  const SHAPES = ["gothic", "arch", "shoulder", "slab", "cross"];
-  const MATERIALS = ["granite", "marble", "slate", "sandstone", "basalt"];
+  const SHAPES = ["gothic", "arch", "shoulder", "slab", "cross", "pillar", "blade", "crystal", "obelisk", "ogee"];
+  const MATERIALS = ["granite", "marble", "slate", "sandstone", "basalt", "obsidian", "sakura", "bronze", "wood", "crystal"];
   const pick = (r, arr) => arr[Math.floor(r() * arr.length)];
 
   // 由 id 推导的外观参数：未在配置中指定的部分随机但稳定
@@ -13,7 +13,7 @@
     const st = g.stone || {};
     return {
       shape: SHAPES.includes(st.shape) ? st.shape : pick(r, SHAPES.slice(0, 4)),
-      material: MATERIALS.includes(st.material) ? st.material : pick(r, MATERIALS),
+      material: MATERIALS.includes(st.material) ? st.material : pick(r, MATERIALS.slice(0, 5)),
       emblem: st.emblem ?? pick(r, ["cross", "moon", "rose", "star", "hourglass"]),
       gilt: !!st.gilt,
       tilt: ((r() - 0.5) * 5).toFixed(2),

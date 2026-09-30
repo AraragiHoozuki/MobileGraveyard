@@ -68,12 +68,12 @@ window.GRAVEYARD = {
       nameLatin: "Tenkahyakken Zan",
       born: "2017.04",                      // 开服时间（示例）
       died: "2021.08",                      // 关服时间（示例）
-      epitaph: "DENA, 还我老婆！",      // 碑面小字
+      epitaph: "闇を切り裂、いざ　咲き誇らん",      // 碑面小字
       version: "v5.9.3",
       platform: "Android",
       description:
         "战乱的刀剑时代已经终结，到来的是新的铭治时代和无数剑士们开创历史、名刀的巫女们「巫剑」也在新时代迈向全新的未来立下了「百华之誓」…",
-      stone: { shape: "slab", material: "marble", emblem: "sword" },
+      stone: { shape: "blade", material: "sakura", emblem: "blades" },
       portrait: "",                      // 可选：碑面瓷像图片，如 "assets/artery-gear.png"
       tags: ["单机", "内置服务端", "安卓"],
       downloads: [
@@ -100,8 +100,8 @@ window.GRAVEYARD = {
       platform: "Windows",
       description: "将服务器放置到游戏程序根目录，运行 start_release.bat 即可。" + 
       "服务器需要 .Net 10 runtime, PC版程序本身需要 DirectX 12 及 MSVC++ 2013",
-      stone: { shape: "gothic", material: "granite", emblem: "rose" },
-      tags: ["卡牌", "剧情完整"],
+      stone: { shape: "crystal", material: "bronze", emblem: "circle" },
+      tags: ["战旗", "剧情", "外置服务器"],
       downloads: [
         { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "DMM", icon: "windows" },
         { label: "服务器+补丁V1.6", url: "https://pan.quark.cn/s/bb213dfe2983?pwd=SVGH", icon: "windows" },
@@ -113,6 +113,25 @@ window.GRAVEYARD = {
         { version: "v1.51", date: "2026-09-19", notes: ["修复85战技有些时候不显示的问题", "修复念装不能出售问题", "修复换职业等行动后皮肤重置的问题", "修复一键开眼后开眼灵装不会立即刷新的问题"] },
         { version: "v1.6", date: "2026-09-25", notes: ["支持扫荡", "优化服务器后台页面，开启服务器后访问 http://127.0.0.1:5137/admin/ 进入后台"] }
       ]
-    }
+    },
+    {
+      id: "sdorica",
+      type: "open",
+      name: "万象物语",
+      nameLatin: "Sdorica",
+      status: "停止更新",
+      note: "",
+      seal: "crystal",
+      mods: [
+        {
+          name: "内置服务器离线客户端",
+          version: "v1.0",
+          author: "Georges Zebit",
+          description: "未实现协会功能，改为协会参谋可以选自己的角色",
+          downloads: [{ label: "暂不提供下载", url: "#", icon: "link" }],
+          changelog: [{ version: "v1.0", date: "2026-09-29", notes: ["初版开发完成"] }]
+        }
+      ]
+    },
   ]
 };

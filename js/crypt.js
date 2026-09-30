@@ -22,12 +22,14 @@
   function tabletHtml(g) {
     const look = GY.stoneLook(g);
     const shape = look.shape === "cross" ? "gothic" : look.shape; // 十字碑放大后用尖拱碑承载文字
-    const cap = GY.shapeCap(shape);
+    const baseCap = GY.shapeCap(shape);
     const W = 100, H = 160;
-    const style = `--mask:${GY.shapeMask(shape, W, H)};--cap:${cap};--tx:${look.tx};--ty:${look.ty}`;
-    const emblemInCap = cap >= 0.3;
-    const eSize = cap >= 0.45 ? 15 : 12;
-    const eTop = cap * 50 + 5 - eSize - 2;
+    // 碑顶够高的碑才把纹章放在碑顶；位置按碑形轮廓计算，正文可能因此略微下移（只影响碑面，不影响碑阴）
+    const slot = look.emblem && baseCap >= 0.3 ? GY.emblemSlot(shape, W, H, baseCap) : null;
+    const cap = slot ? slot.cap : baseCap;
+    const common = `--mask:${GY.shapeMask(shape, W, H)};--tx:${look.tx};--ty:${look.ty}`;
+    const frontStyle = `${common};--cap:${cap}`, backStyle = `${common};--cap:${baseCap}`;
+    const emblemInCap = !!slot;
     let i = 0;
     const carve = (cls) => `class="${cls} carve" style="--i:${i++}"`; // 递增的刻字延迟
 
@@ -37,14 +39,14 @@
     ].filter(Boolean).join("");
 
     const front = `
-      <div class="face front mat-${look.material}" style="${style}">
+      <div class="face front mat-${look.material}" style="${frontStyle}">
         ${SHADOW}
         <div class="stone-face">
           <div class="detail"></div>
           <div class="moss" style="background:${GY.moss(g.id, 1.3)}"></div>
           ${GY.cracks(g.id, W, H, 3)}
           <div class="polish"></div>
-          ${emblemInCap && look.emblem ? `<div class="emblem-top engraved carve" style="--i:${i++};top:${eTop}cqw;width:${eSize}cqw;height:${eSize}cqw">${GY.emblem(look.emblem)}</div>` : ""}
+          ${emblemInCap && look.emblem ? `<div class="emblem-top engraved carve" style="--i:${i++};top:${slot.top.toFixed(2)}cqw;width:${slot.size}cqw;height:${slot.size}cqw">${GY.emblem(look.emblem)}</div>` : ""}
           <div class="tablet-scroll engraved">
             ${!emblemInCap && look.emblem ? `<div ${carve("t-emblem")}>${GY.emblem(look.emblem)}</div>` : ""}
             ${g.nameLatin ? `<div ${carve("t-latin")}>${esc(g.nameLatin)}</div>` : ""}
@@ -66,7 +68,7 @@
     i = 0;
     const log = g.changelog || [];
     const back = `
-      <div class="face back mat-${look.material}" style="${style}">
+      <div class="face back mat-${look.material}" style="${backStyle}">
         ${SHADOW}
         <div class="stone-face">
           <div class="detail"></div>

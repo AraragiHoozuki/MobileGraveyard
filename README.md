@@ -31,12 +31,12 @@
 
 | 字段 | 可选值 |
 | --- | --- |
-| `stone.shape` | `gothic` 尖拱 · `arch` 圆拱 · `shoulder` 耸肩 · `slab` 平顶 · `cross` 十字 |
-| `stone.material` | `granite` 花岗岩 · `marble` 大理石 · `slate` 板岩 · `sandstone` 砂岩 · `basalt` 玄武岩 |
-| `stone.emblem` | `gear` `moon` `cross` `sword` `rose` `skull` `star` `hourglass`，也可以填图片路径 |
+| `stone.shape` | `gothic` 尖拱 · `arch` 圆拱 · `shoulder` 耸肩 · `slab` 平顶 · `cross` 十字 · `pillar` 角柱 · `blade` 刀锋 · `crystal` 晶簇 · `obelisk` 方尖碑 · `ogee` 洋葱拱 |
+| `stone.material` | `granite` 花岗岩 · `marble` 大理石 · `slate` 板岩 · `sandstone` 砂岩 · `basalt` 玄武岩 · `obsidian` 黑曜石 · `sakura` 樱色石 · `bronze` 铜绿 · `wood` 木纹 · `crystal` 水晶 |
+| `stone.emblem` | `gear` `moon` `cross` `sword` `rose` `skull` `star` `hourglass` `sakura` 樱花 · `blades` 交叉刀 · `circle` 炼成阵 · `flask` 烧瓶 · `crystal` 晶石，也可以填图片路径 |
 | `icon`（下载） | `android` `windows` `github` `cloud` `link` `download` |
 
-`stone` 里没填的项会按 `id` 生成固定的随机外观（每次打开都一样）。
+`stone` 里没填的项会按 `id` 生成固定的随机外观（每次打开都一样）；随机只在原有的几种形状（前四种）和材质（前五种）里挑，新样式需要显式指定。`seal`（待入土羊皮卷的火漆印）可用同一批纹章名。
 
 待入土的条目用 `type: "open"`，填 `status`、`note`、`mods` 数组，以及可选的 `seal`（火漆印纹章，默认沙漏）；每个 MOD 可以有 `name` `version` `author` `description` `downloads` `changelog`。
 

@@ -182,6 +182,7 @@
   // 返回 SVG path，坐标系为 w × h
   GY.shapePath = (shape, w, h, ox = 0, oy = 0) => {
     const X = (v) => (ox + v).toFixed(2), Y = (v) => (oy + v).toFixed(2);
+    const poly = (pts) => `M${pts.map(([x, y]) => `${X(x)} ${Y(y)}`).join("L")}Z`;
     switch (shape) {
       case "arch": {
         const ry = w * 0.36;
@@ -201,6 +202,20 @@
         return `M${X(bx)} ${Y(h)}L${X(bx)} ${Y(by + bh)}L${X(0)} ${Y(by + bh)}L${X(0)} ${Y(by)}L${X(bx)} ${Y(by)}L${X(bx)} ${Y(0)}` +
           `L${X(w - bx)} ${Y(0)}L${X(w - bx)} ${Y(by)}L${X(w)} ${Y(by)}L${X(w)} ${Y(by + bh)}L${X(w - bx)} ${Y(by + bh)}L${X(w - bx)} ${Y(h)}Z`;
       }
+      case "pillar": { // 日式角柱：台石 + 低四角锥顶
+        const b = h * 0.88, s = w * 0.06;
+        return poly([[0, h], [0, b], [s, b], [s, w * 0.1], [w / 2, 0], [w - s, w * 0.1], [w - s, b], [w, b], [w, h]]);
+      }
+      case "blade": // 刀锋：背脊直上，斜切成锋尖，刃侧凹弧收向尖端
+        return `M${X(0)} ${Y(h)}L${X(0)} ${Y(w * 0.6)}L${X(w * 0.3)} ${Y(0)}` +
+          `C${X(w * 0.5)} ${Y(w * 0.16)} ${X(w * 0.98)} ${Y(w * 0.24)} ${X(w)} ${Y(w * 0.56)}L${X(w)} ${Y(h)}Z`;
+      case "crystal": // 晶簇：不对称的刻面顶
+        return poly([[0, h], [0, w * 0.46], [w * 0.17, w * 0.2], [w * 0.4, 0], [w * 0.78, w * 0.12], [w, w * 0.4], [w, h]]);
+      case "obelisk": // 方尖碑：略收的碑身 + 尖顶 + 基座
+        return poly([[0, h], [0, h * 0.9], [w * 0.05, h * 0.9], [w * 0.09, w * 0.46], [w / 2, 0], [w * 0.91, w * 0.46], [w * 0.95, h * 0.9], [w, h * 0.9], [w, h]]);
+      case "ogee": // 洋葱拱：S 形曲线收于尖顶
+        return `M${X(0)} ${Y(h)}L${X(0)} ${Y(w * 0.42)}C${X(0)} ${Y(w * 0.2)} ${X(w * 0.4)} ${Y(w * 0.3)} ${X(w / 2)} ${Y(0)}` +
+          `C${X(w * 0.6)} ${Y(w * 0.3)} ${X(w)} ${Y(w * 0.2)} ${X(w)} ${Y(w * 0.42)}L${X(w)} ${Y(h)}Z`;
       case "gothic":
       default: {
         // 尖拱：两段圆弧交于顶点
@@ -211,10 +226,49 @@
   };
 
   // 碑面顶部被弧形占用的高度比例（用于排版留白）
-  GY.shapeCap = (shape) => ({ arch: 0.36, shoulder: 0.2, slab: 0.06, cross: 0, gothic: 0.52 }[shape] ?? 0.4);
+  GY.shapeCap = (shape) => ({
+    arch: 0.36, shoulder: 0.2, slab: 0.06, cross: 0, gothic: 0.52,
+    pillar: 0.08, blade: 0.4, crystal: 0.46, obelisk: 0.46, ogee: 0.5
+  }[shape] ?? 0.4);
 
   GY.shapeMask = (shape, w, h) =>
     svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path d="${GY.shapePath(shape, w, h)}"/></svg>`);
+
+  // 放大碑面顶部纹章的位置（单位 cqw，碑宽 = 100）。按内圈刻线的真实轮廓采样纹章外接圆，
+  // 找出离碑顶最近且距刻线留足 pad 的位置；正文起点放不下时整体压低，压得太多就缩小纹章
+  GY.emblemSlot = (shape, W, H, cap, { pad = 3.5, gap = 3, sizes = [13, 11.5, 10], maxPush = 8 } = {}) => {
+    const m = W * 0.075, ns = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(ns, "svg");
+    svg.setAttribute("style", "position:absolute;width:0;height:0;visibility:hidden");
+    const path = document.createElementNS(ns, "path");
+    path.setAttribute("d", GY.shapePath(shape, W - m * 2, H - m * 2, m, m));
+    svg.appendChild(path);
+    document.body.appendChild(svg);
+    const inside = (x, y) => path.isPointInFill(new DOMPoint(x, y));
+    const fits = (cy, r) => {
+      for (let k = 0; k < 16; k++) {
+        const a = (k * Math.PI) / 8;
+        if (!inside(W / 2 + Math.cos(a) * r, cy + Math.sin(a) * r)) return false;
+      }
+      return true;
+    };
+
+    const natural = cap * 50 + 5; // 不压低时正文的起点
+    let slot = null;
+    for (const size of sizes) {
+      const r = size / 2 + pad;
+      let cy = m + r;
+      while (cy < H / 2 && !fits(cy, r)) cy += 0.5;
+      if (cy >= H / 2) continue;
+      const room = natural - 2 - size / 2 - cy; // 纹章下沿与正文之间的富余
+      const centre = room > 0 ? cy + room / 2 : cy;
+      const textTop = Math.max(natural, centre + size / 2 + gap);
+      slot = { size, top: centre - size / 2, cap: (textTop - 5) / 50 };
+      if (textTop - natural <= maxPush) break;
+    }
+    svg.remove();
+    return slot;
+  };
 
   // 碑身描边：外缘倒角高光 + 内圈刻线
   GY.shapeBevel = (shape, w, h, inset = true) => {
@@ -294,7 +348,38 @@
     return d + "Z";
   }
 
+  // 樱花：五片带缺口的花瓣，绕中心旋转拼成
+  function sakuraPath() {
+    const petal = [[0, -5], [-8, -10], [-14, -19], [-7, -26], [0, -21], [7, -26], [14, -19], [8, -10], [0, -5]];
+    let d = "";
+    for (let i = 0; i < 5; i++) {
+      const a = (i * Math.PI * 2) / 5, c = Math.cos(a), s = Math.sin(a);
+      const p = ([x, y]) => `${(32 + x * c - y * s).toFixed(2)} ${(32 + x * s + y * c).toFixed(2)}`;
+      const [m, c1, c2, e1, n, e2, c3, c4, z] = petal.map(p);
+      d += `M${m}C${c1} ${c2} ${e1}L${n}L${e2}C${c3} ${c4} ${z}Z`;
+    }
+    return d + circ(32, 32, 2.2);
+  }
+
+  // 炼成阵：双环 + 六芒星 + 内环，六角各缀一点
+  function alchemyCircle() {
+    const pt = (deg, r) => [(32 + Math.cos((deg * Math.PI) / 180) * r).toFixed(2), (32 + Math.sin((deg * Math.PI) / 180) * r).toFixed(2)];
+    const tri = (a0) => `M${[0, 120, 240].map((k) => pt(a0 + k, 24).join(" ")).join("L")}Z`;
+    const dots = [0, 60, 120, 180, 240, 300].map((k) => { const [x, y] = pt(k - 90, 24); return `<circle cx="${x}" cy="${y}" r="2.6" fill="currentColor" stroke="none"/>`; }).join("");
+    return `<g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><circle cx="32" cy="32" r="29"/><circle cx="32" cy="32" r="26.4" stroke-width="1"/>` +
+      `<path d="${tri(-90)}"/><path d="${tri(90)}"/><circle cx="32" cy="32" r="11"/></g>${dots}<path d="M32 26l6 6-6 6-6-6Z"/>`;
+  }
+
   const EMBLEMS = {
+    sakura: () => `<path d="${sakuraPath()}" fill-rule="evenodd"/>`,
+    blades: () => {
+      const blade = `<path d="M32 2L35.6 10V43H28.4V10Z${rect(17, 43, 30, 4.2)}${rect(30, 47, 4, 9)}${circ(32, 59, 3.2)}"/>`;
+      return [45, -45].map((a) => `<g transform="translate(32 32) rotate(${a}) scale(.98) translate(-32 -32)">${blade}</g>`).join("");
+    },
+    circle: alchemyCircle,
+    flask: () => `<g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6h16M27 6v18L13.5 49c-2 4 .6 9 5 9h27c4.4 0 7-5 5-9L37 24V6"/></g>` +
+      `<path d="M20.5 40h23l6 11.5c1 2-.3 4.5-2.6 4.5H17.1c-2.3 0-3.6-2.5-2.6-4.5Z"/><circle cx="30" cy="30" r="2"/><circle cx="36" cy="22" r="1.6"/>`,
+    crystal: () => `<g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><path d="M19 6H45L58 22L32 58L6 22Z"/><path d="M6 22H58M19 6L25 22L32 6L39 22L45 6M25 22L32 58L39 22"/></g><path d="M25 22H39L32 58Z"/>`,
     gear: () => `<path fill-rule="evenodd" d="${gearPath()}"/>`,
     moon: () => `<path d="M40.2 9.45A24 24 0 1 0 50.4 47.4A20 20 0 0 1 40.2 9.45Z"/><path d="M52 14l1.6 4.8 4.8 1.6-4.8 1.6L52 26.8l-1.6-4.8-4.8-1.6 4.8-1.6Z"/>`,
     cross: () => `<path d="${rect(28.5, 4, 7, 56)}${rect(12, 17.5, 40, 7)}${circ(32, 21, 13)}${circ(32, 21, 10, 0)}"/>`,
