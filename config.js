@@ -129,7 +129,7 @@ window.GRAVEYARD = {
       tags: [],
       downloads: [
         { label: "数据包", url: "https://pan.quark.cn/s/da678a5150c1?pwd=9tZn", note: "标清", icon: "download" },
-        { label: "v5.11.0", url: "https://pan.quark.cn/s/fb90510adabb?pwd=Yt5M", icon: "android" }
+        { label: "v5.11.0", url: "https://pan.quark.cn/s/be3e6ab1755c?pwd=Hv1M", icon: "android" }
       ],
       changelog: [
         { version: "v5.10.0", date: "2026-09-29", notes: ["游戏关服版本，初步可玩"] },
