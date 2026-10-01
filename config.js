@@ -101,7 +101,7 @@ window.GRAVEYARD = {
       description: "将服务器放置到游戏程序根目录，运行 start_release.bat 即可。" + 
       "服务器需要 .Net 10 runtime, PC版程序本身需要 DirectX 12 及 MSVC++ 2013",
       stone: { shape: "crystal", material: "bronze", emblem: "circle" },
-      tags: ["战旗", "剧情", "外置服务器"],
+      tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
         { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "DMM", icon: "windows" },
         { label: "服务器+补丁V1.6", url: "https://pan.quark.cn/s/bb213dfe2983?pwd=SVGH", icon: "windows" },
@@ -112,6 +112,28 @@ window.GRAVEYARD = {
         { version: "v1.5", date: "2026-09-17", notes: ["提高刻印容量至5000", "武辉石只生成Lv3词条", "修复小蛇关卡结算", "提高角色卡池new概率以及重复角色转换碎片数量"] },
         { version: "v1.51", date: "2026-09-19", notes: ["修复85战技有些时候不显示的问题", "修复念装不能出售问题", "修复换职业等行动后皮肤重置的问题", "修复一键开眼后开眼灵装不会立即刷新的问题"] },
         { version: "v1.6", date: "2026-09-25", notes: ["支持扫荡", "优化服务器后台页面，开启服务器后访问 http://127.0.0.1:5137/admin/ 进入后台"] }
+      ]
+    },
+    {
+      id: "kingsraid",
+      type: "buried",
+      name: "King's Raid",
+      nameLatin: "KingsRaid",
+      born: "2016.09",
+      died: "2025.03",
+      epitaph: "策划乱改数值的牺牲品",
+      version: "v5.11.0",
+      platform: "Android",
+      description: "embedded版：内置服务器版\nexternal版：外置服务器版\nserver：win端服务器",
+      stone: { shape: "obelisk", material: "obsidian", emblem: "star" },
+      tags: [],
+      downloads: [
+        { label: "数据包", url: "https://pan.quark.cn/s/da678a5150c1?pwd=9tZn", note: "标清", icon: "download" },
+        { label: "v5.11.0", url: "https://pan.quark.cn/s/e17b6db9c093?pwd=a15e", icon: "android" }
+      ],
+      changelog: [
+        { version: "v5.10.0", date: "2026-09-29", notes: ["游戏关服版本，初步可玩"] },
+        { version: "v5.11.0", date: "2026-10-01", notes: ["修复了有时需要下载视频资源的问题", "优化了In App Check 时间（应该）", "支持了更换皮肤API、物品分解API"] }
       ]
     },
     {
