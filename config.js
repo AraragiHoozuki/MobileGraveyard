@@ -103,7 +103,7 @@ window.GRAVEYARD = {
       born: "2016.01",
       died: "2024.11",
       epitaph: "私は絶対に、負けるわけにはいかないの！",
-      version: "v1.6",
+      version: "v1.7",
       platform: "Windows",
       description: "将服务器放置到游戏程序根目录，运行 start_release.bat 即可。" + 
       "服务器需要 .Net 10 runtime, PC版程序本身需要 DirectX 12 及 MSVC++ 2013",
