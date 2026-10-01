@@ -35,7 +35,7 @@
   };
 
   // 单引号包裹，便于写进 style="..." 属性
-  const svgUrl = (svg) => `url('data:image/svg+xml,${encodeURIComponent(svg)}')`;
+  const svgUrl = (GY.svgUrl = (svg) => `url('data:image/svg+xml,${encodeURIComponent(svg)}')`);
 
   /* ---------- 程序化纹理（一次生成，写入 CSS 变量） ---------- */
   function canvasTex(w, h, draw) {
@@ -371,6 +371,7 @@
   }
 
   const EMBLEMS = {
+    flame: () => `<path fill-rule="evenodd" d="M32 4C36 14 48 22 48 38A16 16 0 0 1 16 38C16 29 21 24 24 18C25 25 28 28 31 29C29 20 30 11 32 4ZM32 58A8 8 0 0 0 40 50C40 43 34 40 33 34C30 39 24 43 24 50A8 8 0 0 0 32 58Z"/>`,
     sakura: () => `<path d="${sakuraPath()}" fill-rule="evenodd"/>`,
     blades: () => {
       const blade = `<path d="M32 2L35.6 10V43H28.4V10Z${rect(17, 43, 30, 4.2)}${rect(30, 47, 4, 9)}${circ(32, 59, 3.2)}"/>`;

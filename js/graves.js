@@ -154,16 +154,76 @@
     </article>`;
   }
 
+  /* ---------- 长明灯：仍可游玩的单机游戏 ---------- */
+  // 中世纪墓园的「亡者之灯」：台阶、灯柱、灯室、尖顶。坐标系 120 × 300
+  const LAMP_PATH = "M10 300V272H22V258H38V122H32V110H36V54H29L60 16L91 54H84V110H88V122H82V258H98V272H110V300Z";
+  const LAMP_MASK = GY.svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 300" preserveAspectRatio="none"><path d="${LAMP_PATH}"/><circle cx="60" cy="10" r="5"/></svg>`);
+  const LAMP_FLAMES = ["amber", "jade", "violet", "azure"];
+
+  function lampArt() {
+    const line = (y) => `<path d="M0 ${y}H120" stroke="rgba(0,0,0,.55)"/><path d="M0 ${y + 1}H120" stroke="rgba(255,255,255,.12)"/>`;
+    return `<svg class="lamp-art" viewBox="0 0 120 300" preserveAspectRatio="none" aria-hidden="true">
+      <g vector-effect="non-scaling-stroke" stroke-width="1">
+        <path d="M60 16L91 54H60Z" fill="rgba(0,0,0,.38)"/><path d="M60 16L29 54H60Z" fill="rgba(255,255,255,.07)"/>
+        <path d="M70 122H82V258H70Z M72 54H84V110H72Z" fill="rgba(0,0,0,.28)"/>
+        <path d="M38 122H44V258H38Z M36 54H41V110H36Z" fill="rgba(255,255,255,.06)"/>
+        ${[54, 110, 122, 258, 272].map(line).join("")}
+        <rect x="44" y="131" width="32" height="118" fill="none" stroke="rgba(0,0,0,.4)"/>
+        <rect x="44.8" y="131.8" width="32" height="118" fill="none" stroke="rgba(255,255,255,.1)"/>
+        <path class="lamp-window" d="M46 104V76A14 14 0 0 1 74 76V104Z"/>
+        <path d="M46 104V76A14 14 0 0 1 74 76V104" fill="none" stroke="rgba(0,0,0,.7)" stroke-width="1.6"/>
+        <path d="M44 106H76" stroke="rgba(0,0,0,.6)" stroke-width="2"/>
+      </g></svg>`;
+  }
+
+  // 灯的外观：卡片与灯龛详情共用
+  GY.lampLook = (g) => {
+    const r = GY.rng(g.id + ":lamp");
+    const st = g.stone || {};
+    return {
+      material: MATERIALS.includes(st.material) ? st.material : pick(r, ["granite", "sandstone", "slate", "basalt"]),
+      flame: LAMP_FLAMES.includes(g.flame) ? g.flame : "amber",
+      lift: Math.round((r() - 0.5) * 24),
+      tx: Math.round(r() * 300) + "px",
+      ty: Math.round(r() * 300) + "px"
+    };
+  };
+
+  function aliveCard(g, i, L) {
+    const { material, flame, lift, tx, ty } = GY.lampLook(g);
+    const n = (g.mods || []).length;
+    // 竖排灯柱上的名字：按字数缩字号，拉丁字母约占半格
+    const len = [...g.name].reduce((s, ch) => s + (/[\x00-\xff]/.test(ch) ? 0.68 : 1), 0);
+    return `
+    <article class="grave alive reveal" id="grave-${esc(g.id)}" style="--lift:${lift}px;--d:${(i % 4) * 0.14}s">
+      <button class="lamp flame-${flame}" type="button" data-id="${esc(g.id)}" aria-label="${esc(g.name)}">
+        <div class="lamp-spill"></div>
+        <div class="lamp-body mat-${material}" style="--mask:${LAMP_MASK};--tx:${tx};--ty:${ty}">
+          <div class="lamp-shadow" aria-hidden="true"><i></i></div>
+          <div class="stone-face"><div class="detail"></div><div class="moss" style="background:${GY.moss(g.id, 0.6)}"></div>${lampArt()}<div class="sheen"></div></div>
+          <div class="lamp-flame"><i></i></div>
+          <div class="lamp-name engraved" style="--len:${Math.max(len, 3).toFixed(1)}">${esc(g.name)}</div>
+        </div>
+        <div class="lamp-halo"></div>
+        <div class="lamp-ground">${GY.grass(g.id, 200, 30, 40)}</div>
+        ${n ? `<span class="mod-count">${n} ${esc(L.aliveUnit || L.modUnit)}</span>` : ""}
+      </button>
+    </article>`;
+  }
+
   GY.graves = {
     render(C) {
       const L = C.labels;
-      const buried = C.graves.filter((g) => g.type !== "open");
+      const buried = C.graves.filter((g) => g.type !== "open" && g.type !== "alive");
       const open = C.graves.filter((g) => g.type === "open");
+      const alive = C.graves.filter((g) => g.type === "alive");
       GY.$("#graves-buried").innerHTML = buried.map((g, i) => buriedCard(g, i, L)).join("");
       GY.$("#graves-open").innerHTML = open.map((g, i) => openCard(g, i, L)).join("");
+      GY.$("#graves-alive").innerHTML = alive.map((g, i) => aliveCard(g, i, L)).join("");
       GY.$("#section-buried").hidden = !buried.length;
       GY.$("#section-open").hidden = !open.length;
-      return { buried: buried.length, open: open.length };
+      GY.$("#section-alive").hidden = !alive.length;
+      return { buried: buried.length, open: open.length, alive: alive.length };
     }
   };
 })();

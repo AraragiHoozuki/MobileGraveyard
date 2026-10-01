@@ -39,11 +39,12 @@
     el.innerHTML = GY.esc(tpl)
       .replace("{buried}", `<b>${n.buried}</b>`)
       .replace("{open}", `<b>${n.open}</b>`)
-      .replace("✝", "<i>✝</i>");
+      .replace("{alive}", `<b>${n.alive}</b>`)
+      .replaceAll("✝", "<i>✝</i>");
     GY.$$(".yard-title").forEach((t, i) => {
       const c = document.createElement("span");
       c.className = "count";
-      c.textContent = ["— " + toRoman(n.buried) + " —", "— " + toRoman(n.open) + " —"][i];
+      c.textContent = "— " + toRoman([n.buried, n.open, n.alive][i]) + " —";
       t.appendChild(c);
     });
   }
@@ -94,7 +95,7 @@
 
     // 悬停时魂火升起
     GY.$$("#yard [data-id]").forEach((btn) => {
-      const target = btn.querySelector(".stone") || btn.querySelector(".pit") || btn;
+      const target = btn.querySelector(".stone") || btn.querySelector(".lamp-flame") || btn;
       btn.addEventListener("pointerenter", (e) => {
         if (e.pointerType !== "mouse") return;
         clearInterval(timer);

@@ -150,6 +150,106 @@
       </div>`;
   }
 
+  /* ---------- 灯龛（长明灯的 MOD 清单） ---------- */
+  // 小陶油灯：每个 MOD 一盏
+  const OIL_LAMP = `<svg class="oil-lamp" viewBox="0 0 40 34" aria-hidden="true">
+    <path class="oil-fire" d="M30 4C32 8 34 10 34 13A4 4 0 0 1 26 13C26 10 28 8 30 4Z"/>
+    <path d="M4 22C4 18 10 16 20 16H28L33 18L30 21C27 26 22 28 15 28C8 28 4 26 4 22Z" fill="currentColor"/>
+    <path d="M8 21C11 19 18 19 24 20" fill="none" stroke="var(--ink-hi)" stroke-width="1"/>
+    <path d="M12 28L10 32H24L22 28" fill="currentColor" opacity=".75"/></svg>`;
+
+  function shrineHtml(g) {
+    const look = GY.lampLook(g);
+    const mods = g.mods || [];
+    let i = 0;
+    const carve = (cls) => `class="${cls} carve" style="--i:${i++}"`;
+    const oils = mods.map((m) => `
+      <section ${carve("oil")}>
+        ${OIL_LAMP}
+        <div class="oil-body">
+          <div class="oil-head">
+            <h3 class="oil-name">${esc(m.name)}</h3>
+            ${m.version ? `<span class="oil-ver">${esc(m.version)}</span>` : ""}
+          </div>
+          ${m.author ? `<div class="oil-author">${esc(L.by)} · ${esc(m.author)}</div>` : ""}
+          ${m.description ? `<p class="oil-desc">${md(m.description)}</p>` : ""}
+          ${m.downloads && m.downloads.length ? `<div class="oil-links">${m.downloads.map((d) =>
+            `<a class="wick" href="${esc(d.url)}" target="_blank" rel="noopener">${GY.icon(d.icon)}<span>${esc(d.label)}${d.note ? `<small>${esc(d.note)}</small>` : ""}</span></a>`).join("")}</div>` : ""}
+          ${m.changelog && m.changelog.length ? `<details><summary>${esc(L.aliveChangelog || L.modChangelog)}</summary><ol>${m.changelog.map((e) =>
+            `<li><span class="ver">${esc(e.version)}</span>${e.date ? `<span class="date">${esc(e.date)}</span>` : ""}<ul>${(e.notes || []).map((n) => `<li>${md(n)}</li>`).join("")}</ul></li>`).join("")}</ol></details>` : ""}
+        </div>
+      </section>`).join("");
+
+    return `
+      <div class="shrine flame-${look.flame}">
+        <div class="shrine-halo"></div>
+        <div class="niche">
+          <div class="niche-stone stone-face mat-${look.material}" style="--tx:${look.tx};--ty:${look.ty}">
+            <div class="detail"></div>
+            <div class="moss" style="background:${GY.moss(g.id + ":niche", 0.8)}"></div>
+            <div class="niche-polish"></div>
+            <div class="niche-light"></div>
+            <div class="niche-alcove"></div>
+            <div class="niche-scroll engraved">
+              <header class="niche-head">
+                ${g.nameLatin ? `<div ${carve("n-latin")}>${esc(g.nameLatin)}</div>` : ""}
+                <h2 ${carve("n-name")}>${esc(g.name)}</h2>
+                ${g.status ? `<span ${carve("n-status")}>${esc(g.status)}</span>` : ""}
+                <p ${carve("n-note")}>${md(g.note || L.aliveLedgerNote || "")}</p>
+              </header>
+              ${GY.rule("n-rule carve").replace("<svg ", `<svg style="--i:${i++}" `)}
+              ${mods.length ? `<div ${carve("n-heading")}>${esc(L.aliveMods || L.mods)}</div>${oils}` : ""}
+            </div>
+          </div>
+        </div>
+        <div class="shrine-flame"><svg viewBox="0 0 40 64" aria-hidden="true">
+          <defs><radialGradient id="shrine-fl" cx=".5" cy=".78" r=".75">
+            <stop offset="0" style="stop-color:var(--fl-core)"/><stop offset=".4" style="stop-color:var(--fl-mid)"/><stop offset=".85" style="stop-color:var(--fl-out)"/><stop offset="1" style="stop-color:var(--fl-out);stop-opacity:0"/>
+          </radialGradient></defs>
+          <path d="M20 1C23 13 37 23 37 42A17 17 0 0 1 3 42C3 30 15 21 20 1Z" fill="url(#shrine-fl)"/>
+          <path d="M20 28C22 35 28 38 28 46A8 8 0 0 1 12 46C12 40 18 36 20 28Z" style="fill:var(--fl-core)" opacity=".9"/>
+        </svg></div>
+      </div>
+      <div class="crypt-actions">
+        <button class="rite close" type="button">${ICON_CLOSE}<span>${esc(L.close)}</span><kbd>Esc</kbd></button>
+      </div>`;
+  }
+
+  // 灯火从灯室飞到灯龛顶部，灯光随后从火苗处向外铺开，照亮整座灯龛
+  function shrineMotion(open) {
+    const fl = GY.$(".shrine-flame", state.stage);
+    const niche = GY.$(".niche", state.stage);
+    const src = GY.$(".lamp-flame", state.source).getBoundingClientRect();
+    const dst = fl.getBoundingClientRect(), nr = niche.getBoundingClientRect();
+    const s = src.width / dst.width;
+    const dx = src.left + src.width / 2 - (dst.left + dst.width / 2);
+    const dy = src.top + src.height / 2 - (dst.top + dst.height / 2);
+    // 光的圆心（火苗在灯龛坐标系中的位置）与能盖住整座灯龛的半径
+    const ox = dst.left + dst.width / 2 - nr.left, oy = dst.top + dst.height / 2 - nr.top;
+    const R = Math.hypot(Math.max(ox, nr.width - ox), Math.max(oy, nr.height - oy));
+    const shut = `circle(0px at ${ox}px ${oy}px)`, lit = `circle(${R}px at ${ox}px ${oy}px)`;
+    const away = `translate(${dx}px, ${dy}px) scale(${s})`;
+    const dur = GY.reducedMotion ? 1 : open ? 1700 : 1000;
+    const o = { duration: dur, fill: "forwards" };
+    if (open) {
+      fl.animate([{ transform: away }, { transform: `translate(${dx * 0.4}px, ${dy * 0.4 - 40}px) scale(${s + (1 - s) * 0.6})`, offset: 0.25 }, { transform: "none", offset: 0.45 }, { transform: "none" }], { ...o, easing: "cubic-bezier(.4,0,.2,1)" });
+      GY.$(".shrine-halo", state.stage).animate([{ opacity: 0 }, { opacity: 0, offset: 0.4 }, { opacity: 1 }], o);
+      return niche.animate([{ clipPath: shut }, { clipPath: shut, offset: 0.42 }, { clipPath: lit }], { ...o, easing: "cubic-bezier(.5,0,.25,1)" });
+    }
+    GY.$(".shrine-halo", state.stage).animate([{ opacity: 1 }, { opacity: 0, offset: 0.5 }, { opacity: 0 }], o);
+    niche.animate([{ clipPath: lit }, { clipPath: shut, offset: 0.55 }, { clipPath: shut }], { ...o, easing: "cubic-bezier(.6,0,.4,1)" });
+    return fl.animate([{ transform: "none" }, { transform: "none", offset: 0.5 }, { transform: away }], { ...o, easing: "cubic-bezier(.5,0,.3,1)" });
+  }
+
+  function openShrine(g, btn) {
+    state.stage.innerHTML = shrineHtml(g);
+    btn.classList.add("is-out"); // 灯火离开灯室
+    const anim = shrineMotion(true);
+    requestAnimationFrame(() => state.el.classList.add("open"));
+    setTimeout(() => GY.$(".niche", state.stage).classList.add("lit"), GY.reducedMotion ? 0 : 900);
+    anim.onfinish = () => { state.busy = false; GY.$(".rite.close", state.stage).focus({ preventScroll: true }); };
+  }
+
   /* ---------- 转场 ---------- */
   // 计算从卡片位置飞到屏幕中央的起始变换（底边对齐，等比缩放）
   function fromRect(target, src) {
@@ -244,7 +344,7 @@
     state.open = true;
     state.grave = g;
     state.source = btn;
-    state.kind = g.type === "open" ? "ledger" : "tomb";
+    state.kind = { open: "ledger", alive: "shrine" }[g.type] || "tomb";
     state.el.hidden = false;
     state.el.classList.remove("closing");
     state.el.setAttribute("aria-label", g.name);
@@ -252,6 +352,7 @@
     if (!fromHistory) history.pushState({ grave: g.id }, "", "#" + encodeURIComponent(g.id));
 
     if (state.kind === "tomb") openTomb(g, btn);
+    else if (state.kind === "shrine") openShrine(g, btn);
     else openLedger(g, btn);
     GY.$$(".rite.close", state.stage).forEach((b) => b.addEventListener("click", () => close()));
   }
@@ -270,7 +371,7 @@
       state.stage.innerHTML = "";
       state.open = state.busy = false;
       if (btn) {
-        btn.classList.remove("is-lifted");
+        btn.classList.remove("is-lifted", "is-out");
         btn.focus({ preventScroll: true });
       }
     };
@@ -292,6 +393,8 @@
         GY.atmosphere.burst(src, { chips: 10, puffs: 14 });
         finish();
       };
+    } else if (state.kind === "shrine") {
+      shrineMotion(false).onfinish = finish;
     } else {
       const outer = GY.$(".ledger-outer", state.stage);
       const wrap = GY.$(".ledger-wrap", state.stage);

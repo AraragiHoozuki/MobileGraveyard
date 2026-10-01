@@ -5,6 +5,7 @@
  *  · 文本字段支持极简标记：**粗体**  *斜体*  [文字](链接)  以及换行
  *  · type: "buried" = 已关服、已立碑的墓（你的单机复活版）
  *    type: "open"   = 挖好未填的墓（尚未关服的游戏，展示它们的 MOD）
+ *    type: "alive"  = 长明灯（本就是单机的游戏，展示它们的 MOD）
  *  · 以下游戏数据均为示例，请替换为真实内容
  * ===================================================================== */
 window.GRAVEYARD = {
@@ -45,8 +46,14 @@ window.GRAVEYARD = {
     by: "制作",
     modUnit: "件陪葬品",
     modChangelog: "修订记",
-    // 首屏统计，{buried} {open} 会被替换为数量
-    stats: "此处长眠 {buried} 款游戏 ✝ 另有 {open} 座墓穴虚位以待"
+    alive: "长明灯",
+    aliveNote: "为它们点一盏不灭的灯",
+    aliveLedgerNote: "灯火长明",
+    aliveUnit: "份灯油",
+    aliveMods: "灯油 · MOD",
+    aliveChangelog: "添油记",
+    // 首屏统计，{buried} {open} {alive} 会被替换为数量
+    stats: "此处长眠 {buried} 款游戏 ✝ 另有 {open} 座墓穴虚位以待 ✝ {alive} 盏长明灯"
   },
 
   /* 氛围特效，数值越大越浓；设为 0 / false 关闭 */
@@ -104,14 +111,15 @@ window.GRAVEYARD = {
       tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
         { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "DMM", icon: "windows" },
-        { label: "服务器+补丁V1.6", url: "https://pan.quark.cn/s/bb213dfe2983?pwd=SVGH", icon: "windows" },
+        { label: "服务器+补丁V1.7", url: "https://pan.quark.cn/s/3c44f8d0d2aa?pwd=NWCb", icon: "windows" },
         { label: ".Net10", url: "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.401/dotnet-sdk-10.0.401-win-x64.exe", icon: "cloud" }
       ],
       changelog: [
         { version: "v1.4", date: "2026-09-16", notes: ["修复已知bug", "商店出售战斗道具"] },
         { version: "v1.5", date: "2026-09-17", notes: ["提高刻印容量至5000", "武辉石只生成Lv3词条", "修复小蛇关卡结算", "提高角色卡池new概率以及重复角色转换碎片数量"] },
         { version: "v1.51", date: "2026-09-19", notes: ["修复85战技有些时候不显示的问题", "修复念装不能出售问题", "修复换职业等行动后皮肤重置的问题", "修复一键开眼后开眼灵装不会立即刷新的问题"] },
-        { version: "v1.6", date: "2026-09-25", notes: ["支持扫荡", "优化服务器后台页面，开启服务器后访问 http://127.0.0.1:5137/admin/ 进入后台"] }
+        { version: "v1.6", date: "2026-09-25", notes: ["支持扫荡", "优化服务器后台页面，开启服务器后访问 http://127.0.0.1:5137/admin/ 进入后台"] },
+        { version: "v1.7", date: "2026-10-01", notes: ["添加了启动器", "开启代理也能正常连接服务器", "修复进入幻影记忆仓库报错的问题"] }
       ]
     },
     {
@@ -152,6 +160,27 @@ window.GRAVEYARD = {
           description: "未实现协会功能，改为协会参谋可以选自己的角色",
           downloads: [{ label: "暂不提供下载", url: "#", icon: "link" }],
           changelog: [{ version: "v1.0", date: "2026-09-29", notes: ["初版开发完成"] }]
+        }
+      ]
+    },
+    {
+      // 示例条目：请替换为你真正做了 MOD 的单机游戏
+      id: "example-single",
+      type: "alive",
+      name: "占位符",
+      nameLatin: "Exemplum",
+      status: "单机",
+      flame: "violet",                     // 灯火颜色：amber 琥珀 / jade 翠玉 / violet 紫 / azure 蓝
+      stone: { material: "granite" },   // 灯身材质，同墓碑材质
+      note: "",
+      mods: [
+        {
+          name: "示例 MOD",
+          version: "v0.1",
+          author: "Georges Zebit",
+          description: "在这里写 MOD 的说明",
+          downloads: [{ label: "暂不提供下载", url: "#", icon: "link" }],
+          changelog: [{ version: "v0.1", date: "2026-09-30", notes: ["占位"] }]
         }
       ]
     },

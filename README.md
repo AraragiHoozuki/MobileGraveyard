@@ -38,6 +38,8 @@
 
 `stone` 里没填的项会按 `id` 生成固定的随机外观（每次打开都一样）；随机只在原有的几种形状（前四种）和材质（前五种）里挑，新样式需要显式指定。`seal`（待入土羊皮卷的火漆印）可用同一批纹章名。
 
+本就是单机的游戏用 `type: "alive"`，显示在「长明灯」区，点开是一座被灯火照亮的灯龛，列出 MOD。字段与待入土相同（`status` `note` `mods`），另有 `flame` 灯火颜色（`amber` 琥珀 · `jade` 翠玉 · `violet` 紫 · `azure` 蓝）和 `stone.material` 灯身材质。
+
 待入土的条目用 `type: "open"`，填 `status`、`note`、`mods` 数组，以及可选的 `seal`（火漆印纹章，默认沙漏）；每个 MOD 可以有 `name` `version` `author` `description` `downloads` `changelog`。
 
 `site`、`labels`、`effects` 分别控制站点文字、界面用语和氛围特效（雾浓度、鬼火数量、落叶、蝙蝠、闪电、魂火）。`site.ambientAudio` 填一个音频路径就会出现背景音按钮。
