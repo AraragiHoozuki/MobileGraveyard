@@ -106,11 +106,12 @@ window.GRAVEYARD = {
       version: "v1.7",
       platform: "Windows",
       description: "将服务器放置到游戏程序根目录，运行 start_release.bat 即可。" + 
-      "服务器需要 .Net 10 runtime, PC版程序本身需要 DirectX 12 及 MSVC++ 2013",
+      "服务器需要 .Net 10 runtime, PC版程序本身需要 DirectX 12 及 MSVC++ 2013\n" + 
+      "主界面黑屏的，尝试删除 data\prefs\LAST_SELECTED_STORY_QUEST_ID.bin",
       stone: { shape: "crystal", material: "bronze", emblem: "circle" },
       tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
-        { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "DMM", icon: "windows" },
+        { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "密码：为谁炼金吧", icon: "windows" },
         { label: "服务器+补丁V1.7", url: "https://pan.quark.cn/s/3c44f8d0d2aa?pwd=NWCb", icon: "windows" },
         { label: ".Net10", url: "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.401/dotnet-sdk-10.0.401-win-x64.exe", icon: "cloud" }
       ],
