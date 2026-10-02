@@ -107,7 +107,7 @@ window.GRAVEYARD = {
       platform: "Windows",
       description: "将服务器放置到游戏程序根目录，运行 start_release.bat 即可。" + 
       "服务器需要 .Net 10 runtime, PC版程序本身需要 DirectX 12 及 MSVC++ 2013\n" + 
-      "主界面黑屏的，尝试删除 data\prefs\LAST_SELECTED_STORY_QUEST_ID.bin",
+      "主界面黑屏的，尝试删除 data/prefs/LAST_SELECTED_STORY_QUEST_ID.bin",
       stone: { shape: "crystal", material: "bronze", emblem: "circle" },
       tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
