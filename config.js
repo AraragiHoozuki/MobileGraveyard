@@ -133,19 +133,20 @@ window.GRAVEYARD = {
       born: "2016.09",
       died: "2025.03",
       epitaph: "策划乱改数值的牺牲品",
-      version: "v5.11.1",
+      version: "v5.12.0",
       platform: "Android",
       description: "embedded版：内置服务器版\nexternal版：外置服务器版\nserver：win端服务器",
       stone: { shape: "obelisk", material: "obsidian", emblem: "star" },
       tags: [],
       downloads: [
         { label: "数据包", url: "https://pan.quark.cn/s/da678a5150c1?pwd=9tZn", note: "标清", icon: "download" },
-        { label: "v5.11.1", url: "https://pan.quark.cn/s/f220bbc73ca0?pwd=w46Z", icon: "android" }
+        { label: "v5.12.0", url: "https://pan.quark.cn/s/4ef3e5b422a3?pwd=1eTk", icon: "android" }
       ],
       changelog: [
         { version: "v5.10.0", date: "2026-09-29", notes: ["游戏关服版本，初步可玩"] },
         { version: "v5.11.0", date: "2026-10-01", notes: ["修复了有时需要下载视频资源的问题", "优化了In App Check 时间（应该）", "支持了更换皮肤API、物品分解API"] },
-        { version: "v5.11.1", date: "2026-10-03", notes: ["修复了需要下载视频的问题"] }
+        { version: "v5.11.1", date: "2026-10-03", notes: ["修复了需要下载视频的问题"] },
+        { version: "v5.12.0", date: "2026-10-03", notes: ["添加存档导入导出功能", "添加了锁定装备功能", "修复了部分已知bug"] }
       ]
     },
     {
