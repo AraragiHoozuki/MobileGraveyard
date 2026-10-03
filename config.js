@@ -105,7 +105,7 @@ window.GRAVEYARD = {
       epitaph: "私は絶対に、負けるわけにはいかないの！",
       version: "v2.0",
       platform: "Windows / Android",
-      description: "",
+      description: "食用教程：https://araragihoozuki.github.io/2026/09/15/TagatameRevive/",
       stone: { shape: "crystal", material: "bronze", emblem: "circle" },
       tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
