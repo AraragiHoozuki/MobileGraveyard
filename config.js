@@ -105,14 +105,16 @@ window.GRAVEYARD = {
       epitaph: "私は絶対に、負けるわけにはいかないの！",
       version: "v2.0",
       platform: "Windows / Android",
-      description: "食用教程：https://araragihoozuki.github.io/2026/09/15/TagatameRevive/",
+      description: "Server 需要 .Net10\n" + 
+      "PC端需要MSVC++2013及DirectX 12（官方原本需求）",
       stone: { shape: "crystal", material: "bronze", emblem: "circle" },
       tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
         { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "密码：为谁炼金吧", icon: "download" },
         { label: "服务器+PC补丁V2.0", url: "https://pan.quark.cn/s/837516beb804?pwd=gkj3", icon: "windows" },
         { label: "安卓客户端V2.0", url: "https://pan.quark.cn/s/3491a9267d93?pwd=XiVk", icon: "android" },
-        { label: ".Net10", url: "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.401/dotnet-sdk-10.0.401-win-x64.exe", icon: "cloud" }
+        { label: ".Net10", url: "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.401/dotnet-sdk-10.0.401-win-x64.exe", icon: "cloud" },
+        { label: "食用教程", url: "https://araragihoozuki.github.io/2026/09/15/TagatameRevive/", icon: "cloud" }
       ],
       changelog: [
         { version: "v1.4", date: "2026-09-16", notes: ["修复已知bug", "商店出售战斗道具"] },
