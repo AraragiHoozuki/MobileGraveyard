@@ -111,7 +111,7 @@ window.GRAVEYARD = {
       tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
         { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "密码：为谁炼金吧", icon: "download" },
-        { label: "服务器+PC补丁V2.0", url: "https://pan.quark.cn/s/837516beb804?pwd=gkj3", icon: "windows" },
+        { label: "服务器+PC补丁V2.0", url: "https://pan.quark.cn/s/8578d6b6fd88?pwd=DE3C", icon: "windows" },
         { label: "安卓客户端V2.0", url: "https://pan.quark.cn/s/3491a9267d93?pwd=XiVk", icon: "android" },
         { label: ".Net10", url: "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.401/dotnet-sdk-10.0.401-win-x64.exe", icon: "cloud" },
         { label: "食用教程", url: "https://araragihoozuki.github.io/2026/09/15/TagatameRevive/", icon: "cloud" }
