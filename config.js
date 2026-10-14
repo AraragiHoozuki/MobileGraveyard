@@ -133,7 +133,7 @@ window.GRAVEYARD = {
       born: "2016.09",
       died: "2025.03",
       epitaph: "策划乱改数值的牺牲品",
-      version: "v5.19.0",
+      version: "v5.19.1",
       platform: "Android",
       description: "embedded版：内置服务器版\nexternal版：外置服务器版\nserver：win端服务器",
       stone: { shape: "obelisk", material: "obsidian", emblem: "star" },
