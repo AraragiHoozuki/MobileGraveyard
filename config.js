@@ -141,7 +141,7 @@ window.GRAVEYARD = {
       downloads: [
         { label: "数据包", url: "https://pan.quark.cn/s/da678a5150c1?pwd=9tZn", note: "标清", icon: "download" },
         { label: "数据包", url: "https://pan.quark.cn/s/fdf869399528?pwd=ixnq", note: "高清+标清", icon: "download" },
-        { label: "v5.20.0", url: "https://pan.quark.cn/s/9ba27e6cadb4?pwd=5PNk", icon: "android" }
+        { label: "v5.20.4", url: "https://pan.quark.cn/s/c8917ef22393?pwd=8EB3", icon: "android" }
       ],
       changelog: [
         { version: "v5.10.0", date: "2026-09-29", notes: ["游戏关服版本，初步可玩"] },
@@ -152,7 +152,8 @@ window.GRAVEYARD = {
         { version: "v5.17.0", date: "2026-10-07", notes: ["支持高清，需要导入高清数据包", "修复记忆片段关卡无法进入的问题", "修复制作的部分装备自选券无法使用的问题","修复灵魂武器的灵气充能的问题"] },
         { version: "v5.18.0", date: "2026-10-10", notes: ["添加了送礼物的接口", "添加了错误日志导出功能"] },
         { version: "v5.19.1", date: "2026-10-14", notes: ["跳过大部分 InApp Check", "修复需要联网的问题", "修复部分已知bug"] },
-        { version: "v5.20.0", date: "2026-10-19", notes: ["公会、神罚战争已经完成基础支持", "修复部分已知bug"] }
+        { version: "v5.20.0", date: "2026-10-19", notes: ["公会、神罚战争已经完成基础支持", "修复部分已知bug"] },
+        { version: "v5.20.4", date: "2026-10-24", notes: ["公会讨伐、公会战役接口补全，公会战役会掉落建设材料"] }
       ]
     },
     {
