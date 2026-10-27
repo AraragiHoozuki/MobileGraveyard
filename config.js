@@ -190,7 +190,7 @@ window.GRAVEYARD = {
           version: "v0.1",
           author: "Georges Zebit",
           description: "自由编辑feh的单机地图，数据（不要在在线模式中使用）",
-          downloads: [{ label: "暂不提供下载", url: "https://pan.quark.cn/s/87b48d7b2363?pwd=s1vg", icon: "link" }],
+          downloads: [{ label: "夸克网盘", url: "https://pan.quark.cn/s/87b48d7b2363?pwd=s1vg", icon: "link" }],
           changelog: [{ version: "v1.0", date: "2026-10-27", notes: ["初版发布"] }]
         }
       ]
