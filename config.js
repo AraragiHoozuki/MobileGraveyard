@@ -176,23 +176,22 @@ window.GRAVEYARD = {
       ]
     },
     {
-      // 示例条目：请替换为你真正做了 MOD 的单机游戏
-      id: "example-single",
+      id: "feh-editor",
       type: "alive",
-      name: "占位符",
-      nameLatin: "Exemplum",
-      status: "单机",
+      name: "火焰纹章英雄数据编辑器",
+      nameLatin: "FEHagemu",
+      status: "MOD",
       flame: "violet",                     // 灯火颜色：amber 琥珀 / jade 翠玉 / violet 紫 / azure 蓝
       stone: { material: "granite" },   // 灯身材质，同墓碑材质
       note: "",
       mods: [
         {
-          name: "示例 MOD",
+          name: "FEH 编辑器",
           version: "v0.1",
           author: "Georges Zebit",
-          description: "在这里写 MOD 的说明",
-          downloads: [{ label: "暂不提供下载", url: "#", icon: "link" }],
-          changelog: [{ version: "v0.1", date: "2026-09-30", notes: ["占位"] }]
+          description: "自由编辑feh的单机地图，数据（不要在在线模式中使用）",
+          downloads: [{ label: "暂不提供下载", url: "https://pan.quark.cn/s/87b48d7b2363?pwd=s1vg", icon: "link" }],
+          changelog: [{ version: "v1.0", date: "2026-10-27", notes: ["初版发布"] }]
         }
       ]
     },
