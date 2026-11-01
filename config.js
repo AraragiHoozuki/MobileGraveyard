@@ -196,5 +196,25 @@ window.GRAVEYARD = {
         }
       ]
     },
+    {
+      id: "BulletGirlsPhantasia",
+      type: "alive",
+      name: "子弹少女幻想曲",
+      nameLatin: "BulletGirlsPhantasia",
+      status: "MOD",
+      flame: "jade",                     // 灯火颜色：amber 琥珀 / jade 翠玉 / violet 紫 / azure 蓝
+      stone: { material: "granite" },   // 灯身材质，同墓碑材质
+      note: "",
+      mods: [
+        {
+          name: "子弹少女幻想曲 附身敌人",
+          version: "v0.1",
+          author: "Georges Zebit",
+          description: "按 F1 附身控制最近的敌人，按 F2 解除",
+          downloads: [{ label: "夸克网盘", url: "https://pan.quark.cn/s/0d027781a683?pwd=fwZ2", icon: "link" }],
+          changelog: [{ version: "v1.0", date: "2026-10-27", notes: ["初版发布"] }]
+        }
+      ]
+    },
   ]
 };
