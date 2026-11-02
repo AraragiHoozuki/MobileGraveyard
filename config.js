@@ -99,30 +99,25 @@ window.GRAVEYARD = {
       id: "tagatame",
       type: "buried",
       name: "誰ガ為のアルケミスト",
-      nameLatin: "Tagatame",
+      nameLatin: "TagatameLauncher",
       born: "2016.01",
       died: "2024.11",
       epitaph: "私は絶対に、負けるわけにはいかないの！",
-      version: "v2.0",
+      version: "v1.2.0",
       platform: "Windows / Android",
-      description: "Server 需要 .Net10\n" + 
-      "PC端需要MSVC++2013及DirectX 12（官方原本需求）",
+      description: "服务器需要 .Net10\n" + 
+      "PC端需要MSVC++2013及DirectX 12（官方原本需求）\n" +
+      "运行启动器，首先选择安装修复，之后启动服务器和游戏即刻",
       stone: { shape: "crystal", material: "bronze", emblem: "circle" },
       tags: ["战棋", "剧情", "外置服务器"],
       downloads: [
         { label: "数据包", url: "https://pan.baidu.com/s/1d-2na9C3FeDk-aYlrs00iA?pwd=a5mb", note: "密码：为谁炼金吧", icon: "download" },
-        { label: "服务器+PC补丁V2.0", url: "https://pan.quark.cn/s/8578d6b6fd88?pwd=DE3C", icon: "windows" },
-        { label: "安卓客户端V2.0", url: "https://pan.quark.cn/s/3491a9267d93?pwd=XiVk", icon: "android" },
+        { label: "TagatameLauncher v1.2.0", url: "https://pan.quark.cn/s/de576753f4e0?pwd=YATD", icon: "windows" },
+        { label: "安卓客户端", url: "https://pan.quark.cn/s/3491a9267d93?pwd=XiVk", icon: "android" },
         { label: ".Net10", url: "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.401/dotnet-sdk-10.0.401-win-x64.exe", icon: "cloud" },
-        { label: "食用教程", url: "https://araragihoozuki.github.io/2026/09/15/TagatameRevive/", icon: "cloud" }
       ],
       changelog: [
-        { version: "v1.4", date: "2026-09-16", notes: ["修复已知bug", "商店出售战斗道具"] },
-        { version: "v1.5", date: "2026-09-17", notes: ["提高刻印容量至5000", "武辉石只生成Lv3词条", "修复小蛇关卡结算", "提高角色卡池new概率以及重复角色转换碎片数量"] },
-        { version: "v1.51", date: "2026-09-19", notes: ["修复85战技有些时候不显示的问题", "修复念装不能出售问题", "修复换职业等行动后皮肤重置的问题", "修复一键开眼后开眼灵装不会立即刷新的问题"] },
-        { version: "v1.6", date: "2026-09-25", notes: ["支持扫荡", "优化服务器后台页面，开启服务器后访问 http://127.0.0.1:5137/admin/ 进入后台"] },
-        { version: "v1.7", date: "2026-10-01", notes: ["添加了启动器", "开启代理也能正常连接服务器", "修复进入幻影记忆仓库报错的问题"] },
-         { version: "v2.0", date: "2026-10-03", notes: ["支持安卓端", "支持账号引继", "添加授权验证，需要通过QQ群机器人获得授权"] }
+         { version: "v1.2.0", date: "2026-11-02", notes: ["新的开始，重构启动器"] },
       ]
     },
     {
